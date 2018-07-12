@@ -2,8 +2,8 @@ var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 
 var gameStarted = false;
-var hopperWidth = 40;
-var hopperHeight = 40;
+var hopperWidth = 30;
+var hopperHeight = 30;
 var hopperPosX = 435;
 var hopperPosY = 285;
 var hopperColor =  "#42c2f4";
@@ -33,12 +33,12 @@ var duck = new hopper(hopperWidth, hopperHeight, hopperPosX, hopperPosY, hopperC
 var walls = [];
 
 function getRandHeight(){
-	return Math.floor(Math.random() * (250-200 + 1)) + 200;
+	return Math.floor(Math.random() * (450-50 + 1)) + 50;
 }
 
 for (var i = 0; i < 6; i+=2){
 	var randHeight = getRandHeight();
-	walls[i] = new shape(90, randHeight, 900+(Math.floor(i/2)*325), 600-randHeight, "red");
+	walls[i] = new shape(90, 500-randHeight, 900+(Math.floor(i/2)*325), 100+randHeight, "red");
 	walls[i+1] = new shape(90, randHeight, 900+(Math.floor(i/2)*325), 0, "red");
 }
 
@@ -46,17 +46,18 @@ var wallsDrawn = false;
 var heightTmp;
 shape.prototype.slide = function(){
 	if(this.posX<-90){
-		if (!wallsDrawn){
-			this.height = getRandHeight();
-			heightTmp=this.height;
-			wallsDrawn=true;
-		}
-		else{
-			this.height=heightTmp;
-			wallsDrawn=false;
-		}
+		var randHeight = getRandHeight();
+		 if (!wallsDrawn){
+		 	this.height = 500-randHeight;
+		 	heightTmp=randHeight;
+		 	wallsDrawn=true;
+		 }
+		 else{
+		 	this.height=heightTmp;
+		 	wallsDrawn=false;
+		 }
 		if (this.posY!=0)
-			this.posY = 600-this.height;
+			this.posY = 100+randHeight;
 		this.posX=900;
 	}
 	this.posX-=2;
@@ -71,7 +72,7 @@ window.onkeydown=function(e){
 	if (e.keyCode==32 && keyIsDown == false){
 		keyIsDown = true;
 		duck.isHopping = true;
-		duck.hopPeak = duck.posY-60;
+		duck.hopPeak = duck.posY-50;
 	}
 };
 
@@ -99,7 +100,7 @@ function loop(){
 	duck.fall();
 	duck.draw();
 
-	requestAnimationFrame(loop);
+	//requestAnimationFrame(loop);
 }
 
 loop();
