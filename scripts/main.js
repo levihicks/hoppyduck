@@ -72,7 +72,7 @@ window.onkeydown=function(e){
 	if (e.keyCode==32 && keyIsDown == false){
 		keyIsDown = true;
 		duck.isHopping = true;
-		duck.hopPeak = duck.posY-50;
+		duck.hopPeak=(duck.posY-50<0)?0:duck.posY-50;
 	}
 };
 
@@ -83,14 +83,12 @@ window.onkeyup=function(e){
 
 hopper.prototype.fall = function(){
 	if (!this.isHopping)
-		this.posY+=4;
+		this.posY=((this.posY+4)>600-hopperHeight)?600-hopperHeight:this.posY+4;
 	else if (this.posY<=this.hopPeak)
 		this.isHopping=false;
 	else
-		this.posY-=5;
+		this.posY=((this.posY-5)<0)?0:this.posY-5;
 };
-
-
 
 function loop(){
 	ctx.fillStyle = "black";
@@ -102,7 +100,7 @@ function loop(){
 	duck.fall();
 	duck.draw();
 
-	//requestAnimationFrame(loop);
+	requestAnimationFrame(loop);
 }
 
 loop();
