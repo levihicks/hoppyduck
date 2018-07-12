@@ -1,8 +1,22 @@
 html{
 	height: 100%;
 	margin: auto;  
+	font-family: courier;
+	background: #fff2df;
 }
 
 body{
 	text-align: center;
+}
+
+h1{
+	color: #d9ad7c;
+}
+
+p{
+	color: #a2836e;
+}
+
+canvas {
+	border: 3px solid #674d3c;
 }

@@ -83,12 +83,14 @@ window.onkeyup=function(e){
 
 hopper.prototype.fall = function(){
 	if (!this.isHopping)
-		this.posY+=3;
+		this.posY+=4;
 	else if (this.posY<=this.hopPeak)
 		this.isHopping=false;
 	else
 		this.posY-=5;
 };
+
+
 
 function loop(){
 	ctx.fillStyle = "black";
