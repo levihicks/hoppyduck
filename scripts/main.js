@@ -11,8 +11,6 @@ var windowWidth = 900;
 var windowHeight = 600;
 var keyIsDown=false;
 
-
-
 function shape(width, height, posX, posY, color){
 	this.width = width;
 	this.height = height;
@@ -32,7 +30,18 @@ hopper.prototype.constructor = hopper;
 
 var duck = new hopper(hopperWidth, hopperHeight, hopperPosX, hopperPosY, hopperColor);
 
-hopper.prototype.draw = function(){
+var walls = [];
+
+walls[0] = new shape(90, 150, 900, 450, "red");
+walls[1] = new shape(90, 150, 900, 0, "red");
+
+shape.prototype.slide = function(){
+	if(this.posX<-90)
+		this.posX=900;
+	this.posX-=2;
+}
+
+shape.prototype.draw = function(){
 	ctx.fillStyle = this.color;
 	ctx.fillRect(this.posX, this.posY, this.width, this.height);
 };
@@ -62,9 +71,13 @@ hopper.prototype.fall = function(){
 function loop(){
 	ctx.fillStyle = "black";
 	ctx.fillRect(0, 0, windowWidth, windowHeight);
+	for (var i = 0; i < 2; i++){
+		walls[i].draw();
+		walls[i].slide();
+	}
 	duck.fall();
 	duck.draw();
-	//requestAnimationFrame(loop);
+	requestAnimationFrame(loop);
 }
 
 loop();
