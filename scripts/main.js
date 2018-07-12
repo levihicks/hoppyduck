@@ -32,8 +32,10 @@ var duck = new hopper(hopperWidth, hopperHeight, hopperPosX, hopperPosY, hopperC
 
 var walls = [];
 
-walls[0] = new shape(90, 150, 900, 450, "red");
-walls[1] = new shape(90, 150, 900, 0, "red");
+for (var i = 0; i < 6; i+=2){
+	walls[i] = new shape(90, 150, 900+(Math.floor(i/2)*325), 450, "red");
+	walls[i+1] = new shape(90, 150, 900+(Math.floor(i/2)*325), 0, "red");
+}
 
 shape.prototype.slide = function(){
 	if(this.posX<-90)
@@ -71,7 +73,7 @@ hopper.prototype.fall = function(){
 function loop(){
 	ctx.fillStyle = "black";
 	ctx.fillRect(0, 0, windowWidth, windowHeight);
-	for (var i = 0; i < 2; i++){
+	for (var i = 0; i < 6; i++){
 		walls[i].draw();
 		walls[i].slide();
 	}
