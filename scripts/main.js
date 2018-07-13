@@ -1,6 +1,7 @@
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 
+var scorePara = document.querySelector('.score');
 var gameStarted = false;
 var hopperWidth = 30;
 var hopperHeight = 30;
@@ -10,6 +11,7 @@ var hopperColor =  "#42c2f4";
 var windowWidth = 900;
 var windowHeight = 600;
 var keyIsDown=false;
+var collisionDetected = false;
 
 function shape(width, height, posX, posY, color){
 	this.width = width;
@@ -74,6 +76,8 @@ window.onkeydown=function(e){
 		duck.isHopping = true;
 		duck.hopPeak=(duck.posY-35<0)?0:duck.posY-35;
 	}
+	if (e.keyCode==82 && collisionDetected)
+		reload();
 };
 
 window.onkeyup=function(e){
@@ -90,10 +94,10 @@ hopper.prototype.fall = function(){
 		this.posY=((this.posY-5)<0)?0:this.posY-5;
 };
 
-var collisionDetected = false;
 
+pointCount = 0;
 
-hopper.prototype.checkCollision = function(){
+hopper.prototype.checkCollisionAndPoints = function(){
 	var leftX = this.posX;
 	var rightX = this.posX+this.width;
 	var bottomY = this.posY + this.height;
@@ -111,8 +115,23 @@ hopper.prototype.checkCollision = function(){
 					rightX >= wallLeftX))
 					collisionDetected=true;
 		}
+		if (leftX-wallRightX<=2 && leftX-wallRightX>=1)
+			pointCount+=Math.floor(i%2);
 	}
 };
+
+function reload(){
+	collisionDetected=false;
+	pointCount = 0;
+	wallsDrawn=false;
+	for (var i = 0; i < 6; i+=2){
+		var randHeight = getRandHeight();
+		walls[i] = new shape(90, 500-randHeight, 900+(Math.floor(i/2)*325), 100+randHeight, "red");
+		walls[i+1] = new shape(90, randHeight, 900+(Math.floor(i/2)*325), 0, "red");
+	}
+	duck = new hopper(hopperWidth, hopperHeight, hopperPosX, hopperPosY, hopperColor);
+	loop();
+}
 
 
 function loop(){
@@ -124,7 +143,8 @@ function loop(){
 	}
 	duck.fall();
 	duck.draw();
-	duck.checkCollision();
+	duck.checkCollisionAndPoints();
+	scorePara.textContent = "Score: " + pointCount;
 	if(!collisionDetected)
 		requestAnimationFrame(loop);
 }
