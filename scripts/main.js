@@ -72,7 +72,7 @@ window.onkeydown=function(e){
 	if (e.keyCode==32 && keyIsDown == false){
 		keyIsDown = true;
 		duck.isHopping = true;
-		duck.hopPeak=(duck.posY-50<0)?0:duck.posY-50;
+		duck.hopPeak=(duck.posY-35<0)?0:duck.posY-35;
 	}
 };
 
@@ -90,6 +90,31 @@ hopper.prototype.fall = function(){
 		this.posY=((this.posY-5)<0)?0:this.posY-5;
 };
 
+var collisionDetected = false;
+
+
+hopper.prototype.checkCollision = function(){
+	var leftX = this.posX;
+	var rightX = this.posX+this.width;
+	var bottomY = this.posY + this.height;
+	var topY = this.posY;
+	for (var i = 0; i < walls.length; i++){
+		var wallLeftX = walls[i].posX;
+		var wallRightX = walls[i].posX+walls[i].width;
+		var wallTopY = walls[i].posY;
+		var wallBottomY = walls[i].posY+walls[i].height;
+		if ((topY <= wallBottomY && topY>=wallTopY) ||
+			(bottomY <= wallBottomY && 
+			bottomY >= wallTopY)){
+				if((leftX <= wallRightX && leftX>=wallLeftX) ||
+					(rightX <= wallRightX && 
+					rightX >= wallLeftX))
+					collisionDetected=true;
+		}
+	}
+};
+
+
 function loop(){
 	ctx.fillStyle = "black";
 	ctx.fillRect(0, 0, windowWidth, windowHeight);
@@ -99,9 +124,12 @@ function loop(){
 	}
 	duck.fall();
 	duck.draw();
-
-	requestAnimationFrame(loop);
+	duck.checkCollision();
+	if(!collisionDetected)
+		requestAnimationFrame(loop);
 }
+
+
 
 loop();
 
