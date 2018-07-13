@@ -12,6 +12,8 @@ var windowWidth = 900;
 var windowHeight = 600;
 var keyIsDown=false;
 var collisionDetected = false;
+var pointCount = 0;
+var highScore = 0;
 
 function shape(width, height, posX, posY, color){
 	this.width = width;
@@ -94,9 +96,6 @@ hopper.prototype.fall = function(){
 		this.posY=((this.posY-5)<0)?0:this.posY-5;
 };
 
-
-pointCount = 0;
-
 hopper.prototype.checkCollisionAndPoints = function(){
 	var leftX = this.posX;
 	var rightX = this.posX+this.width;
@@ -133,6 +132,10 @@ function reload(){
 	loop();
 }
 
+function getHighScore(){
+	if (localStorage.getItem('highScore'))
+		highScore=localStorage.getItem('highScore');
+}
 
 function loop(){
 	ctx.fillStyle = "black";
@@ -144,12 +147,15 @@ function loop(){
 	duck.fall();
 	duck.draw();
 	duck.checkCollisionAndPoints();
-	scorePara.textContent = "Score: " + pointCount;
+	if (pointCount>highScore){
+		highScore=pointCount;
+		localStorage.setItem('highScore', highScore);
+	}
+	scorePara.textContent = "Score: " + pointCount + " // High Score: " + highScore;
 	if(!collisionDetected)
 		requestAnimationFrame(loop);
 }
 
-
-
+getHighScore();
 loop();
 
