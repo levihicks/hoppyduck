@@ -101,7 +101,7 @@ hopper.prototype.fall = function(){
 		this.posY=((this.posY-5)<0)?0:this.posY-5;
 };
 
-hopper.prototype.checkCollisionAndPoints = function(){
+hopper.prototype.checkCollision = function(){
 	var leftX = this.posX;
 	var rightX = this.posX+this.width;
 	var bottomY = this.posY + this.height;
@@ -119,10 +119,17 @@ hopper.prototype.checkCollisionAndPoints = function(){
 					rightX >= wallLeftX))
 					collisionDetected=true;
 		}
+	}
+};
+
+hopper.prototype.checkPoints = function(){
+	var leftX = this.posX;
+	for (var i = 0; i < walls.length; i++){
+		var wallRightX = walls[i].posX+walls[i].width;
 		if (leftX-wallRightX<=2 && leftX-wallRightX>=1)
 			pointCount+=Math.floor(i%2);
 	}
-};
+}
 
 function reload(){
 	collisionDetected=false;
@@ -155,8 +162,12 @@ function loop(){
 	for (var key in duck){
 		duck[key].fall();
 		duck[key].draw();
+		if (key == 'body'||key == 'beak'){
+			duck[key].checkCollision();
+			if(key == 'body')
+				duck[key].checkPoints();
+		}
 	}
-	duck['body'].checkCollisionAndPoints();
 	if (pointCount>highScore){
 		highScore=pointCount;
 		localStorage.setItem('highScore', highScore);
