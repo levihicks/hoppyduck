@@ -7,7 +7,7 @@ var hopperWidth = 30;
 var hopperHeight = 30;
 var hopperPosX = 435;
 var hopperPosY = 285;
-var hopperColor =  "#42c2f4";
+var hopperColor =  "darkgreen";
 var windowWidth = 900;
 var windowHeight = 600;
 var keyIsDown=false;
@@ -31,8 +31,11 @@ function hopper(width, height, posX, posY, color){
 
 hopper.prototype = Object.create(shape.prototype);
 hopper.prototype.constructor = hopper;
-
-var duck = new hopper(hopperWidth, hopperHeight, hopperPosX, hopperPosY, hopperColor);
+var duck = [];
+duck['body'] = new hopper(hopperWidth, hopperHeight, hopperPosX, hopperPosY, hopperColor); 
+duck['eyeball'] = new hopper(10, 10, 455, 285, "white"); 
+duck['pupil'] = new hopper(5, 5, 460, 287, "gray"); 
+duck['beak'] = new hopper(20, 10, 455, 295, "yellow"); 
 
 var walls = [];
 
@@ -75,8 +78,10 @@ shape.prototype.draw = function(){
 window.onkeydown=function(e){
 	if (e.keyCode==32 && keyIsDown == false){
 		keyIsDown = true;
-		duck.isHopping = true;
-		duck.hopPeak=(duck.posY-35<0)?0:duck.posY-35;
+		for (var key in duck){
+			duck[key].isHopping=true;
+			duck[key].hopPeak=(duck[key].posY-35<0)?0:duck[key].posY-35;
+		}
 	}
 	if (e.keyCode==82 && collisionDetected)
 		reload();
@@ -128,7 +133,10 @@ function reload(){
 		walls[i] = new shape(90, 500-randHeight, 900+(Math.floor(i/2)*325), 100+randHeight, "red");
 		walls[i+1] = new shape(90, randHeight, 900+(Math.floor(i/2)*325), 0, "red");
 	}
-	duck = new hopper(hopperWidth, hopperHeight, hopperPosX, hopperPosY, hopperColor);
+	duck['body'] = new hopper(hopperWidth, hopperHeight, hopperPosX, hopperPosY, hopperColor);
+	duck['eyeball'] = new hopper(10, 10, 455, 285, "white");
+	duck['pupil'] = new hopper(5, 5, 460, 287, "gray");
+	duck['beak'] = new hopper(20, 10, 455, 295, "yellow");
 	loop();
 }
 
@@ -144,9 +152,11 @@ function loop(){
 		walls[i].slide();
 		walls[i].draw();
 	}
-	duck.fall();
-	duck.draw();
-	duck.checkCollisionAndPoints();
+	for (var key in duck){
+		duck[key].fall();
+		duck[key].draw();
+	}
+	duck['body'].checkCollisionAndPoints();
 	if (pointCount>highScore){
 		highScore=pointCount;
 		localStorage.setItem('highScore', highScore);
