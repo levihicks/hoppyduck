@@ -23,8 +23,9 @@ function shape(width, height, posX, posY, color){
 	this.color = color;
 }
 
-function hopper(width, height, posX, posY, color){
+function hopper(width, height, posX, posY, color, offset){
 	shape.call(this,width, height, posX, posY, color);
+	this.offset = offset;
 	this.isHopping = false;
 	this.hopPeak;
 }
@@ -32,10 +33,10 @@ function hopper(width, height, posX, posY, color){
 hopper.prototype = Object.create(shape.prototype);
 hopper.prototype.constructor = hopper;
 var duck = [];
-duck['body'] = new hopper(hopperWidth, hopperHeight, hopperPosX, hopperPosY, hopperColor); 
-duck['eyeball'] = new hopper(10, 10, 455, 285, "white"); 
-duck['pupil'] = new hopper(5, 5, 460, 287, "gray"); 
-duck['beak'] = new hopper(20, 10, 455, 295, "yellow"); 
+duck['body'] = new hopper(hopperWidth, hopperHeight, hopperPosX, hopperPosY, hopperColor, 0); 
+duck['eyeball'] = new hopper(10, 10, 455, 285, "white", 0); 
+duck['pupil'] = new hopper(5, 5, 460, 287, "gray", 2); 
+duck['beak'] = new hopper(20, 10, 455, 295, "yellow", 10); 
 
 var walls = [];
 
@@ -80,7 +81,7 @@ window.onkeydown=function(e){
 		keyIsDown = true;
 		for (var key in duck){
 			duck[key].isHopping=true;
-			duck[key].hopPeak=(duck[key].posY-35<0)?0:duck[key].posY-35;
+			duck[key].hopPeak=(duck['body'].posY-35<0)?duck[key].offset:duck[key].posY-35;
 		}
 	}
 	if (e.keyCode==82 && collisionDetected)
@@ -94,11 +95,11 @@ window.onkeyup=function(e){
 
 hopper.prototype.fall = function(){
 	if (!this.isHopping)
-		this.posY=((this.posY+4)>600-hopperHeight)?600-hopperHeight:this.posY+4;
+		this.posY=((duck['body'].posY+4)>600-hopperHeight)?600-hopperHeight+this.offset:this.posY+4;
 	else if (this.posY<=this.hopPeak)
 		this.isHopping=false;
 	else
-		this.posY=((this.posY-5)<0)?0:this.posY-5;
+		this.posY=((duck['body'].posY-5)<0)?this.offset:this.posY-5;
 };
 
 hopper.prototype.checkCollision = function(){
@@ -140,10 +141,10 @@ function reload(){
 		walls[i] = new shape(90, 500-randHeight, 900+(Math.floor(i/2)*325), 100+randHeight, "red");
 		walls[i+1] = new shape(90, randHeight, 900+(Math.floor(i/2)*325), 0, "red");
 	}
-	duck['body'] = new hopper(hopperWidth, hopperHeight, hopperPosX, hopperPosY, hopperColor);
-	duck['eyeball'] = new hopper(10, 10, 455, 285, "white");
-	duck['pupil'] = new hopper(5, 5, 460, 287, "gray");
-	duck['beak'] = new hopper(20, 10, 455, 295, "yellow");
+	duck['body'] = new hopper(hopperWidth, hopperHeight, hopperPosX, hopperPosY, hopperColor, 0);
+	duck['eyeball'] = new hopper(10, 10, 455, 285, "white", 0);
+	duck['pupil'] = new hopper(5, 5, 460, 287, "gray", 7);
+	duck['beak'] = new hopper(20, 10, 455, 295, "yellow", 10);
 	loop();
 }
 
@@ -155,10 +156,10 @@ function getHighScore(){
 function loop(){
 	ctx.fillStyle = "black";
 	ctx.fillRect(0, 0, windowWidth, windowHeight);
-	for (var i = 0; i < walls.length; i++){
-		walls[i].slide();
-		walls[i].draw();
-	}
+	//for (var i = 0; i < walls.length; i++){
+	//	walls[i].slide();
+	//	walls[i].draw();
+	//}
 	for (var key in duck){
 		duck[key].fall();
 		duck[key].draw();
