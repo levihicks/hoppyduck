@@ -78,15 +78,27 @@ shape.prototype.draw = function(){
 
 window.onkeydown=function(e){
 	if (e.keyCode==32 && keyIsDown == false){
-		keyIsDown = true;
-		for (var key in duck){
-			duck[key].isHopping=true;
-			duck[key].hopPeak=(duck['body'].posY-35<0)?duck[key].offset:duck[key].posY-35;
-		}
+		hop();
 	}
 	if (e.keyCode==82 && collisionDetected)
 		reload();
 };
+
+canvas.onmousedown = hop;
+
+canvas.onmouseup = function(){
+	keyIsDown=false;
+}
+
+function hop(){
+	keyIsDown=true;
+		for (var key in duck){
+			duck[key].isHopping=true;
+			duck[key].hopPeak=(duck['body'].posY-35<0)?duck[key].offset:duck[key].posY-35;
+		}
+}
+
+
 
 window.onkeyup=function(e){
 	if (e.keyCode==32)
