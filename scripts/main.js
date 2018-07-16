@@ -143,7 +143,7 @@ function reload(){
 	}
 	duck['body'] = new hopper(hopperWidth, hopperHeight, hopperPosX, hopperPosY, hopperColor, 0);
 	duck['eyeball'] = new hopper(10, 10, 455, 285, "white", 0);
-	duck['pupil'] = new hopper(5, 5, 460, 287, "gray", 7);
+	duck['pupil'] = new hopper(5, 5, 460, 287, "gray", 2);
 	duck['beak'] = new hopper(20, 10, 455, 295, "yellow", 10);
 	loop();
 }
@@ -156,10 +156,10 @@ function getHighScore(){
 function loop(){
 	ctx.fillStyle = "black";
 	ctx.fillRect(0, 0, windowWidth, windowHeight);
-	//for (var i = 0; i < walls.length; i++){
-	//	walls[i].slide();
-	//	walls[i].draw();
-	//}
+	for (var i = 0; i < walls.length; i++){
+		walls[i].slide();
+		walls[i].draw();
+	}
 	for (var key in duck){
 		duck[key].fall();
 		duck[key].draw();
