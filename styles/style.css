@@ -1,7 +1,8 @@
 html{
 	height: 100%;
 	margin: auto;  
-	font-family: courier;
+	font-family: 'Press Start 2P',courier;
+	font-size: 1em;
 	background: #fff2df;
 }
 
@@ -11,12 +12,18 @@ body{
 
 h1{
 	color: #d9ad7c;
+	font-size: 2em;
 }
 
 p{
 	color: #a2836e;
+	font-size: .8em;
 }
 
 canvas {
 	border: 3px solid #674d3c;
+}
+
+.score{
+	font-size: .8em;
 }
