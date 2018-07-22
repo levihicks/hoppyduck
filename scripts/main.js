@@ -46,8 +46,8 @@ function getRandHeight(){
 
 for (var i = 0; i < 6; i+=2){
 	var randHeight = getRandHeight();
-	walls[i] = new shape(90, 500-randHeight, 900+(Math.floor(i/2)*325), 100+randHeight, "red");
-	walls[i+1] = new shape(90, randHeight, 900+(Math.floor(i/2)*325), 0, "red");
+	walls[i] = new shape(90, 500-randHeight, 900+(Math.floor(i/2)*325), 100+randHeight, "#1f1f2e");
+	walls[i+1] = new shape(90, randHeight, 900+(Math.floor(i/2)*325), 0, "#1f1f2e");
 }
 
 var wallsDrawn = false;
@@ -165,9 +165,11 @@ function getHighScore(){
 		highScore=localStorage.getItem('highScore');
 }
 
+var backgroundImage = new Image();
+backgroundImage.src="./images/background.png";
+
 function loop(){
-	ctx.fillStyle = "black";
-	ctx.fillRect(0, 0, windowWidth, windowHeight);
+	ctx.drawImage(backgroundImage, 0, 0);
 	for (var i = 0; i < walls.length; i++){
 		walls[i].slide();
 		walls[i].draw();
