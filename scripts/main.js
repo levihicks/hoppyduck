@@ -150,8 +150,8 @@ function reload(){
 	wallsDrawn=false;
 	for (var i = 0; i < 6; i+=2){
 		var randHeight = getRandHeight();
-		walls[i] = new shape(90, 500-randHeight, 900+(Math.floor(i/2)*325), 100+randHeight, "red");
-		walls[i+1] = new shape(90, randHeight, 900+(Math.floor(i/2)*325), 0, "red");
+		walls[i] = new shape(90, 500-randHeight, 900+(Math.floor(i/2)*325), 100+randHeight, "#1f1f2e");
+		walls[i+1] = new shape(90, randHeight, 900+(Math.floor(i/2)*325), 0, "#1f1f2e");
 	}
 	duck['body'] = new hopper(hopperWidth, hopperHeight, hopperPosX, hopperPosY, hopperColor, 0);
 	duck['eyeball'] = new hopper(10, 10, 455, 285, "white", 0);
