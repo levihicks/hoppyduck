@@ -26,8 +26,9 @@ function shape(width, height, posX, posY, color){
 function hopper(width, height, posX, posY, color, offset){
 	shape.call(this,width, height, posX, posY, color);
 	this.offset = offset;
-	this.isHopping = false;
-	this.hopPeak;
+	this.acc = 0;
+	this.gravity = 1;
+	this.vel = 0;
 }
 
 hopper.prototype = Object.create(shape.prototype);
@@ -93,12 +94,9 @@ canvas.onmouseup = function(){
 function hop(){
 	keyIsDown=true;
 		for (var key in duck){
-			duck[key].isHopping=true;
-			duck[key].hopPeak=(duck['body'].posY-35<0)?duck[key].offset:duck[key].posY-35;
+			duck[key].acc-=13;
 		}
 }
-
-
 
 window.onkeyup=function(e){
 	if (e.keyCode==32)
@@ -106,12 +104,21 @@ window.onkeyup=function(e){
 };
 
 hopper.prototype.fall = function(){
-	if (!this.isHopping)
-		this.posY=((duck['body'].posY+4)>600-hopperHeight)?600-hopperHeight+this.offset:this.posY+4;
-	else if (this.posY<=this.hopPeak)
-		this.isHopping=false;
-	else
-		this.posY=((duck['body'].posY-5)<0)?this.offset:this.posY-5;
+	this.acc += this.gravity;
+	this.posY += this.vel;
+	this.vel += this.acc;
+	if(this.vel>4)
+		this.vel = 4;
+	if(this.vel<-14)
+		this.vel=-14;
+	this.acc=0;
+	if((duck['body'].posY+4)>600-hopperHeight){
+		this.posY = 600-hopperHeight+this.offset;
+		
+	}
+	if((duck['body'].posY-1)<0){
+		this.posY = this.offset;
+	}
 };
 
 hopper.prototype.checkCollision = function(){
