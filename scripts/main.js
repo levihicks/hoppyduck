@@ -94,7 +94,7 @@ canvas.onmouseup = function(){
 function hop(){
 	keyIsDown=true;
 		for (var key in duck){
-			duck[key].acc-=13;
+			duck[key].acc-=14;
 		}
 }
 
