@@ -174,12 +174,23 @@ function getHighScore(){
 
 var backgroundImage = new Image();
 backgroundImage.src="./images/background.png";
+var tileUDImage = new Image();
+tileUDImage.src="./images/tileUD.png";
+var tileImage = new Image();
+tileImage.src="./images/tile.png";
+
+function drawWallImage(w){
+	var imageX = w.posX;
+	var imageY = (w.posY==0)?(805-w.height)*-1:w.posY;
+	ctx.drawImage((w.posY==0)?tileUDImage:tileImage, imageX, imageY);
+}
 
 function loop(){
 	ctx.drawImage(backgroundImage, 0, 0);
 	for (var i = 0; i < walls.length; i++){
 		walls[i].slide();
 		walls[i].draw();
+		drawWallImage(walls[i]);
 	}
 	for (var key in duck){
 		duck[key].fall();
