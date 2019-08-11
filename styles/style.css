@@ -20,10 +20,37 @@ p{
 	font-size: .8em;
 }
 
+.canvasContainer{
+	width: 900px;
+	height: 600px;
+	position: relative;
+}
+
 canvas {
 	border: 3px solid #674d3c;
 }
 
+#restartButton{
+	position: absolute;
+	top: 0;
+}
+
 .score{
 	font-size: .8em;
+}
+
+table{
+	width: 300px;
+	margin: 0 auto;	
+}
+
+@media (min-width: 1500px){
+	table{
+		float:right;	
+	}
+	canvas{
+		position: absolute;
+		right: 50%;
+		transform: translate(50%);
+	}
 }

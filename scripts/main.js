@@ -1,6 +1,6 @@
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
-
+var cc = document.querySelector(".canvasContainer");
 var scorePara = document.querySelector('.score');
 var gameStarted = false;
 var hopperWidth = 30;
@@ -81,14 +81,22 @@ window.onkeydown=function(e){
 	if (e.keyCode==32 && keyIsDown == false){
 		hop();
 	}
-	if (e.keyCode==82 && collisionDetected)
-		reload();
+//	if (e.keyCode==82 && collisionDetected)
+//		reload();
 };
 
 canvas.onmousedown = hop;
 
 canvas.onmouseup = function(){
 	keyIsDown=false;
+}
+
+function restartButton(){
+	var btn = document.createElement("button");
+	btn.setAttribute("id", "restartButton");
+	btn.innerText="RESTART";
+	btn.onclick = reload;
+	return btn;
 }
 
 function hop(){
@@ -136,8 +144,11 @@ hopper.prototype.checkCollision = function(){
 			bottomY >= wallTopY)){
 				if((leftX <= wallRightX && leftX>=wallLeftX) ||
 					(rightX <= wallRightX && 
-					rightX >= wallLeftX))
+					rightX >= wallLeftX)){
 					collisionDetected=true;
+					cc.appendChild(restartButton());	
+				}
+
 		}
 	}
 };
@@ -152,6 +163,7 @@ hopper.prototype.checkPoints = function(){
 }
 
 function reload(){
+	document.getElementById("restartButton").remove();
 	collisionDetected=false;
 	pointCount = 0;
 	wallsDrawn=false;
