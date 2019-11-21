@@ -99,6 +99,66 @@ function restartButton(){
 	return btn;
 }
 
+function highScoreMessage(){
+	var msg = document.createElement("div");
+	msg.setAttribute("class", "highScoreMessage");
+	msg.innerText = "NEW HIGH SCORE!";
+	return msg;
+}
+
+function charButtonClick(){
+	var direction = this.id[4];
+	var order = this.id[this.id.length-1];
+	var nst = document.querySelector(".nameSelectTable");
+	var charCell = nst.children[1].children[order-1];
+	var currentCharCode = charCell.innerText.charCodeAt();
+	if(direction=="U")
+		var newCharCode = (currentCharCode==65)?90:currentCharCode - 1;
+	else if (direction=="D")
+		var newCharCode = (currentCharCode==90)?65:currentCharCode + 1;
+	charCell.innerText = String.fromCharCode(newCharCode);
+}
+
+function charButton(order, direction){
+	var btn = document.createElement("button");
+	btn.setAttribute("id", "char"+direction+"Button"+String(order));
+	btn.innerText = (direction=="Up")?"▲":"▼";
+	btn.onclick=charButtonClick;
+	return btn;
+}
+
+function nameSelectScreen(){
+	var nameSelectTable = document.createElement("table");
+	nameSelectTable.setAttribute("class", "nameSelectTable");
+	var topRow = document.createElement("tr");
+	var middleRow = document.createElement("tr");
+	var bottomRow = document.createElement("tr");
+	for(var i = 1; i < 4; i++){
+		var btnCellTop = document.createElement("td");
+		btnCellTop.appendChild(charButton(i,"Up"));
+		var midCell = document.createElement("td");
+		midCell.innerText = String.fromCharCode(65+i);
+		var btnCellBottom = document.createElement("td");
+		btnCellBottom.appendChild(charButton(i, "Down"));
+		topRow.appendChild(btnCellTop);
+		middleRow.appendChild(midCell);
+		bottomRow.appendChild(btnCellBottom);
+	}
+	nameSelectTable.appendChild(topRow);	
+	nameSelectTable.appendChild(middleRow);	
+	nameSelectTable.appendChild(bottomRow);	
+	return nameSelectTable;
+}
+
+function gameOverContainer(){
+	var container = document.createElement("div");
+	container.setAttribute("id", "gameOver");
+	container.appendChild(highScoreMessage());
+	container.appendChild(nameSelectScreen());
+	container.appendChild(restartButton());
+	return container;
+}
+
 function hop(){
 	keyIsDown=true;
 		for (var key in duck){
@@ -129,6 +189,8 @@ hopper.prototype.fall = function(){
 	}
 };
 
+
+
 hopper.prototype.checkCollision = function(){
 	var leftX = this.posX;
 	var rightX = this.posX+this.width;
@@ -146,7 +208,7 @@ hopper.prototype.checkCollision = function(){
 					(rightX <= wallRightX && 
 					rightX >= wallLeftX)){
 					collisionDetected=true;
-					cc.appendChild(restartButton());	
+					cc.appendChild(gameOverContainer());	
 				}
 
 		}
@@ -163,7 +225,7 @@ hopper.prototype.checkPoints = function(){
 }
 
 function reload(){
-	document.getElementById("restartButton").remove();
+	document.getElementById("gameOver").remove();
 	collisionDetected=false;
 	pointCount = 0;
 	wallsDrawn=false;

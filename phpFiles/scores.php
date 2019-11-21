@@ -10,7 +10,7 @@
 	}
 	$sql = "SELECT name as 'NAME', score as 'SCORE' from highScores order by score desc";
 	$result = $conn->query($sql);
-	echo "<table><tr><th>NAME</th><th>SCORE</th></tr>";	
+	echo "<table id=\"highScores\"><tr><th>NAME</th><th>SCORE</th></tr>";	
 	if($result->num_rows > 0){
 		while($row = $result->fetch_assoc()){
 			echo "<tr><td>" . $row["NAME"] . "</td><td>" . $row["SCORE"] ."</td></tr>";

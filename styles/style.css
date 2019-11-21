@@ -24,33 +24,71 @@ p{
 	width: 900px;
 	height: 600px;
 	position: relative;
+	margin: auto;
 }
 
 canvas {
 	border: 3px solid #674d3c;
+	position: absolute;
+	left:0;
+	top: 0;
+	z-index: -1;
 }
 
+
 #restartButton{
-	position: absolute;
-	top: 0;
+	background: black;
+	color: green;
+	font-family: 'Press Start 2P', courier;
+	font-size: 1.5em;
+	padding: 10px 20px;
+	margin-top: 25px;
+	border: 3px solid lightgreen;
+}
+
+.highScoreMessage{
+	padding: 10px 20px;
+}
+
+.nameSelectTable{
+	margin: 0 auto;
+}
+
+.nameSelectTable button{
+	font-family: 'Press Start 2P', courier;
+	font-size: 1.5em;
+	background: green;
+	border: none;
+}
+
+.nameSelectTable button:hover{
+	background: lightgreen;
+}
+
+.nameSelectTable button:active{
+	background: darkgreen;
 }
 
 .score{
 	font-size: .8em;
 }
 
-table{
+#highScores{
 	width: 300px;
-	margin: 0 auto;	
 }
 
 @media (min-width: 1500px){
-	table{
-		float:right;	
+	#highScores{
+		position: absolute;
+		right:0;
+		top:50%;
+		transform: translateY(50%);	
 	}
-	canvas{
+	/*.canvasContainer{
 		position: absolute;
 		right: 50%;
 		transform: translate(50%);
-	}
+	}*/
 }
+
+
